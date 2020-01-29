@@ -1,0 +1,8 @@
+== I want to show you...
+
+[%step,role="nobullets lora"]
+* icon:check[role=green] ... *Pipeline as a Code*.
+* icon:check[role=green] ... *Shared Library* example.
+* icon:check[role=green] ... *{upwork}'s* journey to the Shared Library.
+* icon:check[role=green] ... lessons learned during this process.
+

@@ -1,0 +1,533 @@
+[background-color="{bg2}"]
+== Part 2: {upwork} Case Study
+
+Moving from Jenkins V1 freestyle jobs to Jenkins V2 _"pipeline as a code"_
+
+=== Where were we before?
+
+[%notitle]
+=== Jenkins V1 Pipeline View
+
+image::jenkinsv1-jobs-pipeline.png[background,cover]
+
+[%notitle]
+=== Jenkins V1 Job Configuration
+
+image::jenkinsv1-job-config.png[background,cover]
+
+=== Jenkins 2
+
+Migration started 2016/2017
+
+https://jenkins.io/2.0/
+
+image::jenkins.png[width="10%"]
+
+[.xs]_Image: https://jenkins.io/artwork/_
+
+[%notitle]
+=== Jenkins V1 Job Configuration
+
+image::pipeline-library-first-commits.png[background,cover]
+
+
+=== Lesson #1: Use [.mark]##versions##, Luke!
+
+[%notitle]
+=== .
+
+image::pipeline-version-master.png[background,cover]
+
+[%notitle]
+=== .
+
+image::pipeline-version-1.0.0.png[background,cover]
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Library("UpworkPipeline@some-feature-branch") _
+
+agoraPipeline {
+    buildArgs = [
+        AGORA_SERVICE: 'testServiceDS',
+        BUILD_TEAM: 'Team Name',
+        BUILD_OWNER: 'owner',
+        BUILD_EMAIL: 'owner@upwork.com'
+    ]
+    taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Library([.mark2]##"UpworkPipeline@some-feature-branch"##) _
+
+agoraPipeline {
+    buildArgs = [
+        AGORA_SERVICE: 'testServiceDS',
+        BUILD_TEAM: 'Team Name',
+        BUILD_OWNER: 'owner',
+        BUILD_EMAIL: 'owner@upwork.com'
+    ]
+    taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Library("UpworkPipeline@some-feature-branch") _
+
+agoraPipeline {
+    buildArgs = [
+        AGORA_SERVICE: 'testServiceDS',
+        BUILD_TEAM: 'Team Name',
+        BUILD_OWNER: 'owner',
+        BUILD_EMAIL: 'owner@upwork.com'
+    ]
+    taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Library("UpworkPipeline@v2.35.0") _
+
+agoraPipeline {
+    buildArgs = [
+        AGORA_SERVICE: 'testServiceDS',
+        BUILD_TEAM: 'Team Name',
+        BUILD_OWNER: 'owner',
+        BUILD_EMAIL: 'owner@upwork.com'
+    ]
+    taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+}
+----
+
+[%notitle]
+=== .
+
+image::pipeline-stage-failed.png[background,cover]
+
+=== Lesson #2: [.mark]##Unit Test## Pipeline Shared Library
+
+[%notitle]
+=== .
+
+image::jenkins-pipeline-unit.png[background,cover]
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Test
+void testRunningDeployDevWithCommitMessage() {
+    //given:
+    def agoraPipeline = load('CBE-766', 'CBE-766: ... [deploy-dev]')
+
+    //when:
+    agoraPipeline {
+        buildArgs = [
+            AGORA_SERVICE: 'testServiceDS',
+            BUILD_TEAM: 'Team Name',
+            BUILD_OWNER: 'owner',
+            BUILD_EMAIL: 'owner@upwork.com'
+        ]
+        taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    }
+
+    //then:
+    assertStages(['Build', 'Sonar', 'Publish JAR', 'Publish Docker', 'Deploy (dev)'])
+    //and:
+    assertJobStatusSuccess()
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Test
+void testRunningDeployDevWithCommitMessage() {
+    //given:
+    [.mark2]##def agoraPipeline = load('CBE-766', 'CBE-766: ... [deploy-dev]')##
+
+    //when:
+    agoraPipeline {
+        buildArgs = [
+            AGORA_SERVICE: 'testServiceDS',
+            BUILD_TEAM: 'Team Name',
+            BUILD_OWNER: 'owner',
+            BUILD_EMAIL: 'owner@upwork.com'
+        ]
+        taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    }
+
+    //then:
+    assertStages(['Build', 'Sonar', 'Publish JAR', 'Publish Docker', 'Deploy (dev)'])
+    //and:
+    assertJobStatusSuccess()
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Test
+void testRunningDeployDevWithCommitMessage() {
+    //given:
+    def agoraPipeline = load('CBE-766', 'CBE-766: ... [deploy-dev]')
+
+    //when:
+    [.mark2]##agoraPipeline {
+        buildArgs = [
+            AGORA_SERVICE: 'testServiceDS',
+            BUILD_TEAM: 'Team Name',
+            BUILD_OWNER: 'owner',
+            BUILD_EMAIL: 'owner@upwork.com'
+        ]
+        taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    }##
+
+    //then:
+    assertStages(['Build', 'Sonar', 'Publish JAR', 'Publish Docker', 'Deploy (dev)'])
+    //and:
+    assertJobStatusSuccess()
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Test
+void testRunningDeployDevWithCommitMessage() {
+    //given:
+    def agoraPipeline = load('CBE-766', 'CBE-766: ... [deploy-dev]')
+
+    //when:
+    agoraPipeline {
+        buildArgs = [
+            AGORA_SERVICE: 'testServiceDS',
+            BUILD_TEAM: 'Team Name',
+            BUILD_OWNER: 'owner',
+            BUILD_EMAIL: 'owner@upwork.com'
+        ]
+        taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    }
+
+    //then:
+    [.mark2]##assertStages(['Build', 'Sonar', 'Publish JAR', 'Publish Docker', 'Deploy (dev)'])##
+    //and:
+    assertJobStatusSuccess()
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+@Test
+void testRunningDeployDevWithCommitMessage() {
+    //given:
+    def agoraPipeline = load('CBE-766', 'CBE-766: ... [deploy-dev]')
+
+    //when:
+    agoraPipeline {
+        buildArgs = [
+            AGORA_SERVICE: 'testServiceDS',
+            BUILD_TEAM: 'Team Name',
+            BUILD_OWNER: 'owner',
+            BUILD_EMAIL: 'owner@upwork.com'
+        ]
+        taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    }
+
+    //then:
+    assertStages(['Build', 'Sonar', 'Publish JAR', 'Publish Docker', 'Deploy (dev)'])
+    //and:
+    [.mark2]##assertJobStatusSuccess()##
+}
+----
+
+[%notitle]
+=== .
+
+image::pipeline-unit-tests.png[background,cover]
+
+=== Lesson #3: Beware of [.mark]##non-Serializable## classes
+
+
+=== Keep it simple
+
+Limit the amount of complex logic embedded in the Pipeline itself (similarly to a shell script) and avoid treating it as a general-purpose programming language.
+
+Pipeline restricts all variables to `Serializable` types, so keeping Pipeline logic simple helps avoid a `NotSerializableException` - see appendix at the bottom.
+
+https://jenkins.io/blog/2017/02/01/pipeline-scalability-best-practice/
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+import com.amazonaws.services.opsworks.AWSOpsWorks
+import com.amazonaws.services.opsworks.AWSOpsWorksClientBuilder
+import com.amazonaws.services.opsworks.model.App
+import com.amazonaws.services.opsworks.model.CreateDeploymentRequest
+import com.amazonaws.services.opsworks.model.DeploymentCommand
+import com.amazonaws.services.opsworks.model.Stack
+
+//...
+
+private void runDeployment(Stack stack, App app, String instanceId, String buildNumber) {
+    final CreateDeploymentRequest createDeploymentRequest = new CreateDeploymentRequest()
+        .withCommand(new DeploymentCommand().withName("deploy"))
+        .withComment("Deployment triggered by pipeline (build ${buildNumber})")
+        .withStackId(stack.getStackId())
+        .withAppId(app.getAppId())
+        .withInstanceIds([instanceId])
+
+    sdk.createDeployment(createDeploymentRequest)
+}
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+sh returnStdout: true, script: """
+    aws opsworks create-deployment \
+        --command 'Name=deploy' \
+        --comment 'Deployment triggered by pipeline (build ${buildNumber})' \
+        --stack-id '${stack.stackId}' \
+        --app-id '${app.appId}' \
+        --instance-ids '${instances.join("' '")}' \
+        --query '{deploymentId:DeploymentId}' \
+        --output json \
+        --region ${region}
+    """.stripIndent()
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+[.mark2]##sh## returnStdout: true, script: """
+    aws opsworks create-deployment \
+        --command 'Name=deploy' \
+        --comment 'Deployment triggered by pipeline (build ${buildNumber})' \
+        --stack-id '${stack.stackId}' \
+        --app-id '${app.appId}' \
+        --instance-ids '${instances.join("' '")}' \
+        --query '{deploymentId:DeploymentId}' \
+        --output json \
+        --region ${region}
+    """.stripIndent()
+----
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+sh returnStdout: true, script: """
+[.mark2]##    aws opsworks create-deployment \
+        --command 'Name=deploy' \
+        --comment 'Deployment triggered by pipeline (build ${buildNumber})' \
+        --stack-id '${stack.stackId}' \
+        --app-id '${app.appId}' \
+        --instance-ids '${instances.join("' '")}' \
+        --query '{deploymentId:DeploymentId}' \
+        --output json \
+        --region ${region}
+##
+        """.stripIndent()
+----
+
+=== `@NonCPS` method annotation
+
+*Use `@NonCPS`-annotated functions for slightly more complex work.*
+This means more involved processing, logic, and transformations. This lets you leverage additional Groovy & functional features for more powerful, concise, and performant code.
+
+https://jenkins.io/blog/2017/02/01/pipeline-scalability-best-practice/
+
+=== Lesson #4: Groovy code [.mark]##always## executes on master
+
+[%notitle,background-color="{bg2}"]
+=== .
+
+
+> For a Pipeline, Groovy code always executes on master which means using master resources (memory and CPU). Therefore, it is critically important to reduce the amount of Groovy code executed by Pipelines (this includes any methods called on classes imported in Pipelines).
+
+[.xs]##Source: https://jenkins.io/doc/book/pipeline/pipeline-best-practices/##
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-01.png[]
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-02.png[]
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-03.png[]
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-04.png[]
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-05.png[]
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-06.png[]
+
+[%notitle,transition="none"]
+=== .
+
+image::http-issue-07.png[]
+
+=== File system operations
+
+Use steps like `readFile`, `writeFile`, `deleteDir`, etc. instead of `java.io.file` API
+
+https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/
+
+=== Lesson #5: Use [.mark]##CI/CD## for Jenkins Pipeline Shared Library
+
+=== How we did it before...
+
+[%step,role="nobullets"]
+* icon:check[role=green] Merge pull request to `master`.
+* icon:check[role=green] Jenkins builds `master` (compile, unit test, publish).
+* icon:warning[role=orange] Create git tag `vX.Y.Z` *manually*.
+* icon:warning[role=orange] Trigger Jenkins build for tag `vX.Y.Z` *manually*.
+* icon:warning[role=orange] Update changelog *manually*.
+* icon:warning[role=orange] Update Global Shared Library version *manually*.
+* icon:warning[role=orange] Post notification to Dash channel *manually*.
+
+=== How we do it now
+
+[%step,role="nobullets"]
+* icon:check[role=green] Merge pull request to `master` and add `[release: X.Y.Z]` to the commit message.
+* icon:check[role=green] Jenkins builds `master` (compile, unit test, *smoke test*, *release*, publish)
+* icon:check[role=green] *Smoke Tests* run a release candidate version using real pipelines.
+* icon:check[role=green] Automated changelog update.
+* icon:check[role=green] Automated Global Shared Library version update.
+* icon:check[role=green] Automated notification to #ask-cicd Dash channel.
+
+
+[%notitle,transition="none"]
+=== .
+
+image::pipeline-library-release.png[background,cover]
+
+[%notitle,transition="none"]
+=== .
+
+image::pipeline-library-notification.png[background,cover]
+
+=== Lesson #6: [.mark]##Effortless## pipeline updates for the customers
+
+[{slide-with-code}]
+=== !
+
+[source,groovy,subs="{subs}"]
+----
+agoraPipeline {
+    buildArgs = [
+        AGORA_SERVICE: 'testServiceDS',
+        BUILD_TEAM: 'Team Name',
+        BUILD_OWNER: 'owner',
+        BUILD_EMAIL: 'owner@upwork.com'
+    ]
+    taxisCredentials = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+
+    deploy {
+        dev {
+            sandbox = true
+            branches = ["develop", "feature/\*"]
+        }
+        staging {
+            blueGreen = true
+            branches = ["staging", "RC/*"]
+            params = ["--cpu-reservation 256"]
+        }
+        prod {
+            blueGreen = true
+            branches = ["master"]
+        }
+    }
+}
+----
+
+[%notitle,transition="none"]
+=== .
+
+image::pipeline-stages.png[background,cover]
+
+=== Lesson #7: Collect, measure, analyze [.mark]##the data##
+
+=== Jenkins Plugins
+
+* Jenkins [.mark]*Metrics* plugin +
+https://wiki.jenkins.io/display/JENKINS/Metrics+Plugin
+* Jenkins [.mark]*Prometheus* plugin +
+https://wiki.jenkins.io/display/JENKINS/Prometheus+Plugin
+
+[%notitle,transition="none"]
+=== .
+
+image::grafana-01.png[background,cover]
+
+[%notitle,transition="none"]
+=== .
+
+image::grafana-02.png[background,cover]
+
+=== Summary
+
+1. Use [.mark]*versions*, Luke!
+
+2. [.mark]*Unit Test* Pipeline Shared Library.
+
+3. Beware of [.mark]*non-Serializable* classes.
+
+4. Groovy code [.mark]*always* executes on master.
+
+5. Use [.mark]*CI/CD* for Jenkins Pipeline Shared Library.
+
+6. [.mark]*Effortless* pipeline updates for the customers.
+
+7. Collect, measure, analyze [.mark]*the data*
+
+=== [.mark]##Continuous Improvements##

@@ -1,0 +1,58 @@
+plugins {
+    id 'org.asciidoctor.jvm.gems' version '3.0.0'
+    id 'org.asciidoctor.jvm.revealjs' version '3.0.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    ruby {
+        gems()
+    }
+}
+
+revealjs {
+    version = '3.0.0'
+
+    templateGitHub {
+        organisation = 'hakimel'
+        repository = 'reveal.js'
+        tag = '3.8.0'
+    }
+}
+
+asciidoctorRevealJs {
+    sourceDir file("src/docs/asciidoc")
+    outputDir file("build/asciidoc/reveal")
+
+    resources {
+        from (sourceDir) {
+            include 'images/**'
+            include 'css/**'
+        }
+    }
+
+    attributes 'build-gradle': file('build.gradle'),
+        'endpoint-url': 'http://example.org',
+        'source-highlighter': 'highlightjs',
+        'toc': 'left',
+        'icons': 'font',
+        'setanchors': '',
+        'idprefix': 'slide-',
+        'idseparator': '-',
+        'docinfo1': '',
+        'revealjs_theme': 'white',
+        'revealjs_progress': 'false',
+        'revealjs_transition': 'fade',
+        'revealjs_backgroundTransition': 'none',
+        'revealjs_width': '1024',
+        'revealjs_history': 'true'
+}
+
+// alias
+task asciidoctor(dependsOn: asciidoctorRevealJs)

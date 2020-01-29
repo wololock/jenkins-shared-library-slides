@@ -1,0 +1,12 @@
+== Part 1: [.mark]##The basics##
+
+=== What is Jenkins Pipeline [.mark]##Shared Library##?
+
+=== DEMO
+
+=== Conclusions
+
+[%step,role="nobullets lora"]
+* icon:check[role=green] Shared Library can [.mark]*simplify* complex pipeline syntax.
+* icon:check[role=green] It [.mark]*supports* small custom steps, as well as blackbox solutions.
+

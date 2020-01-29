@@ -1,0 +1,30 @@
+= Over two hundred CI/CD pipelines and a single Jenkins Shared Library - a case study
+
+The story of Upwork migrating to pipeline as a code.
+
+== Compiling slides
+
+```
+./gradlew --no-deamon asciidoctor
+```
+
+== Contact me
+
+* @wololock on Twitter
+* szymon.stepniak[at]gmail.com
+* Subscribe to my YouTube channel - https://www.youtube.com/channel/UCEf8e5YAYnowq-2deW4tpsw
+
+== Notes and links
+
+* Upwork's website https://upwork.com/
+* Jenkins Pipeline as a Code - https://gist.github.com/wololock/990c27d08241a863886ef80b68e6ac0e
+* Jenkins Pipeline as a Code + shared library - https://gist.github.com/wololock/7646d7aea5422e6e72341f826742d914
+* Scripted pipeline vs. declarative pipeline - https://www.youtube.com/watch?v=Ei_Nk14vruE
+* Jenkins 2 Overview - https://jenkins.io/2.0/
+* Unit testing library for Jenkins pipelines - https://github.com/jenkinsci/JenkinsPipelineUnit
+* Best Practices for Scalable Pipeline Code - https://jenkins.io/blog/2017/02/01/pipeline-scalability-best-practice/
+* Pipeline Best Practices - https://jenkins.io/doc/book/pipeline/pipeline-best-practices/
+* Pipeline: Basic Steps - https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/
+* Jenkins Metrics plugin - https://wiki.jenkins.io/display/JENKINS/Metrics+Plugin
+* Jenkins Prometheus plugin - https://wiki.jenkins.io/display/JENKINS/Prometheus+Plugin
+* Grafana dashboards - https://grafana.com/

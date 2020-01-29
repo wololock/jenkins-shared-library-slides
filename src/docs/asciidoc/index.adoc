@@ -1,0 +1,30 @@
+= Over [.mark]#two hundred# CI/CD pipelines and a single Jenkins Shared Library - a case study
+:sources-url: icon:github[] https://github.com/wololock/jenkins-shared-library-slides
+:imagesdir: ./images
+:customcss: ./css/custom.css
+:highlightjs-theme: ./css/androidstudio.min.css
+:listing-caption: Listing
+:iconfont-cdn: http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css
+:bg1: #666666
+:bg2: #1d4354
+:cur1: [.blinking]##_##
+:cur2: [.blinking]##█##
+:subs: verbatim,attributes,macros,quotes
+:slide-with-code: %notitle,background-color="{bg1}",transition="none",background-transition="none"
+:upwork: pass:q[<span class="color-upwork-1">Up</span><span class="color-upwork-2">work</span>]
+
+The story of *{upwork}* migrating to pipeline as a code.
+
+icon:twitter[] @wololock
+
+
+
+include::{includedir}/intro.adoc[]
+
+include::{includedir}/whoami.adoc[]
+
+include::{includedir}/demo.adoc[]
+
+include::{includedir}/casestudy.adoc[]
+
+include::{includedir}/thankyou.adoc[]

@@ -1,0 +1,24 @@
+[.stretch.whoami]
+== Thank you!
+
+[.author.animation-slide-left]
+image::wololock.jpg[scaledwidth=20%]
+
+[.animation-slide-bottom.text-left.margin-left-200.font-3rem]
+--
+_That's all, folks!_
+
+Do you have any [.mark]*questions*?
+--
+
+
+[.animation-slide-right.text-left.margin-left-200.margin-top-60]
+--
+[.mark]*Handout*, slides, and all materials are available:
+
+{sources-url}
+
+icon:twitter[] @wololock
+
+icon:envelope-o[] szymon.stepniak[at]gmail.com
+--
